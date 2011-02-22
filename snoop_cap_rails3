@@ -1,0 +1,29 @@
+--- 
+? !ruby/regexp /login/
+: sign_in
+? !ruby/regexp /logged_in\?/
+: person_signed_in?
+? !ruby/regexp /request\.path/
+: current_path
+? !ruby/regexp /field_named/
+: find_field
+? !ruby/regexp /current_dom\.at/
+: 'page.should have_css'
+? !ruby/regexp /user/
+: person
+? !ruby/regexp /users/
+: people
+? !ruby/regexp /persons/
+: people
+? !ruby/regexp /peoples/
+: people
+? !ruby/regexp /response\.should have_tag/
+: "page.should have_css"
+? !ruby/regexp /\)\.text\s+include\((.+)/
+: ", :text => \1"
+? !ruby/regexp /\)\.text.should == (.+)/
+: ", :text => \1)"
+? !ruby/regexp /current_dom\.text\.include\?((.+))\.should == (?:true|false)/
+: "page.should have_content(\1)"
+? !ruby/regexp /link_to_remote (.+?), (.+)/
+: "link_to \1, :remote => true, \2"
