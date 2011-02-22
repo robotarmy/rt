@@ -47,7 +47,6 @@ describe RT do
       3.times do
         rt.replacement_line 
       end
-      debugger
       rt.current_file.closed?.should be_true
     end
 
@@ -57,9 +56,29 @@ describe RT do
       rt.replacement_line.should include %%line 2 foplzo%
       rt.replacement_line.should include %%line 3 "'bar'"^^oobar--marm%
     end
+
+    it "has a match count, change count and line count" do
+      rt.current_filename = mock_filename
+      rt.get_prompt = 'n'
+      rt.replacement_line.should include %%line 1 foo%
+      rt.replacement_line.should include %%line 2 foplzo%
+      rt.get_prompt = 'y'
+      rt.replacement_line.should include %%line 3 "'bar'"^^oobar--marm%
+      rt.change_count.should == 1
+      rt.match_count.should == 2
+      rt.line_count.should == 3
+      rt.statistic_line.should include('3 lines / 1 changes / 2 matches')
+    end
+
     it "can run on the entire file and replace it" do
       rt.current_filename = mock_filename
       rt.run
+    end
+
+    it "prints out a statistics line at the end of run" do
+      rt.current_filename = mock_filename
+      rt.run
+      rt.stdout.string.should include(rt.statistic_line)
     end
   
   end
@@ -86,10 +105,10 @@ describe RT do
       rt
     end
     it "shows a prompt if prompt is true" do
-     rt.replacement_line
-     info = %%Replacing #{@search} with #{@replace}%
+     replacement_line = rt.replacement_line
      prompt = %%Would you like to replace this instance : \[y\] or \[n\] ?%
-     rt.stdout.string.should include(info)
+     rt.stdout.string.should include('foo')
+     rt.stdout.string.should include(replacement_line)
      rt.stdout.string.should include(prompt)
     end
 
