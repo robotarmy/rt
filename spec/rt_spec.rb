@@ -1,9 +1,6 @@
-$:.push "."
-require 'rt'
-require 'yaml'
-require 'stringio'
-describe RT do
+require File.join(File.dirname(__FILE__),'spec_helper')
 
+describe RT do
   describe "RT Defaults to" do
     let(:rt) do
       RT.new({})
@@ -20,13 +17,7 @@ describe RT do
   end
   describe "given a file" do
     let(:mock_filename) do
-
-      f = File.open('mock_file.txt',File::CREAT|File::TRUNC|File::RDWR) do |f|
-        f << %%line 1 foo\n%
-        f << %%line 2 foplzo\n%
-        f << %%line 3 "'foo'"^^oofoo--marm\n%
-      end
-      'mock_file.txt'
+      create_mock_file
     end
 
     let(:rt) do 
