@@ -22,7 +22,7 @@ describe RT do
 
     let(:rt) do 
       @search = /foo/
-      @replace = "bar"
+        @replace = "bar"
       re_list = { 
         @search => @replace,
       }
@@ -71,15 +71,95 @@ describe RT do
       rt.run
       rt.stdout.string.should include(rt.statistic_line)
     end
-  
+
   end
 
-  it "given a directory use each file for search and replace"
+  describe " it can run on a directory or a file " do
+    let(:mock_dir) do
+      fixture_path('dir')
+    end
+    let(:mock_filename) do
+      create_mock_file
+    end
+
+    before do
+      %x{mkdir -p #{mock_dir}}
+      %w(file1 file2).each do |f|
+        %x{touch #{File.join(mock_dir,f)}}
+      end
+    end
+    after do
+      %x{rm -rf #{mock_dir}}
+    end
+
+    let(:rt) do 
+      @search = /foo/
+        @replace = "bar"
+      re_list = { 
+        @search => @replace,
+      }
+
+      rt = RT.new(re_list)
+      # mock out stdout
+      rt.stdout = StringIO.new
+      # turn on prompt
+      rt.prompt = true
+      # set default prompt value for mock prompt
+      rt.get_prompt = 'y'
+
+      rt
+    end
+    it "works with a file" do
+      rt.run_on(mock_filename) 
+      rt.file_count.should == 1
+    end
+    it "works with a directory" do
+      rt.run_on(mock_dir) 
+      rt.file_count.should == 2
+    end
+  end
+  describe " given a directory " do
+    let(:rt) do 
+      @search = /foo/
+        @replace = "bar"
+      re_list = { 
+        @search => @replace,
+      }
+
+      rt = RT.new(re_list)
+      # mock out stdout
+      rt.stdout = StringIO.new
+      # turn on prompt
+      rt.prompt = true
+      # set default prompt value for mock prompt
+      rt.get_prompt = 'y'
+      # this will be the set value of 'rt' for this let
+      rt.directory = fixture_path('dir')
+
+      rt
+    end
+
+    before do
+      %x{mkdir -p #{rt.directory}}
+      %w(file1 file2).each do |f|
+        %x{touch #{File.join(rt.directory,f)}}
+      end
+    end
+    after do
+      %x{rm -rf #{rt.directory}}
+    end
+
+    it "counts number of files processed" do
+      rt.run
+      rt.file_count.should == 2
+    end
+  end
+
   describe "searching for foo and replacing with bar" do
 
     let(:rt) do 
       @search = /foo/
-      @replace = "bar"
+        @replace = "bar"
       re_list = { 
         @search => @replace,
       }
@@ -96,11 +176,11 @@ describe RT do
       rt
     end
     it "shows a prompt if prompt is true" do
-     replacement_line = rt.replacement_line
-     prompt = %%Would you like to replace this instance : \[y\] or \[n\] ?%
-     rt.stdout.string.should include('foo')
-     rt.stdout.string.should include(replacement_line)
-     rt.stdout.string.should include(prompt)
+      replacement_line = rt.replacement_line
+      prompt = %%Would you like to replace this instance : \[y\] or \[n\] ?%
+      rt.stdout.string.should include('foo')
+      rt.stdout.string.should include(replacement_line)
+      rt.stdout.string.should include(prompt)
     end
 
     it "can be configured to take a list of search and replace" do
@@ -151,6 +231,6 @@ describe RT do
       end
     end
   end
-    
+
 end
 
