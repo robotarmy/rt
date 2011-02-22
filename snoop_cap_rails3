@@ -1,29 +1,54 @@
 --- 
-? !ruby/regexp /login/
-: sign_in
-? !ruby/regexp /logged_in\?/
-: person_signed_in?
+# capybara migration helpers
 ? !ruby/regexp /request\.path/
 : current_path
 ? !ruby/regexp /field_named/
 : find_field
 ? !ruby/regexp /current_dom\.at/
 : 'page.should have_css'
-? !ruby/regexp /user/
-: person
-? !ruby/regexp /users/
-: people
-? !ruby/regexp /persons/
-: people
-? !ruby/regexp /peoples/
-: people
-? !ruby/regexp /response\.should have_tag/
-: "page.should have_css"
 ? !ruby/regexp /\)\.text\s+include\((.+)/
 : ", :text => \1"
 ? !ruby/regexp /\)\.text.should == (.+)/
 : ", :text => \1)"
 ? !ruby/regexp /current_dom\.text\.include\?((.+))\.should == (?:true|false)/
 : "page.should have_content(\1)"
+? !ruby/regexp /\s+check/
+: "page.check"
+? !ruby/regexp /\s+uncheck/
+: "page.uncheck"
+? !ruby/regexp /current_dom\.text\.include\?(.+?)\.(.+?)\s+be_true$/
+: "page.\2 have_content\1"
+
+# restful auth to devise helpers
+? !ruby/regexp /login/
+: sign_in
+? !ruby/regexp /logout/
+: sign_out
+? !ruby/regexp /logged_in\?/
+: person_signed_in?
+
+# user to person helpers
+? !ruby/regexp /user/
+: person
+? !ruby/regexp /User/
+: Person
+? !ruby/regexp /users/
+: people
+? !ruby/regexp /persons/
+: people
+? !ruby/regexp /peoples/
+: people
+
+# rspec 1 to capybara
+? !ruby/regexp /response\.should have_tag/
+: "page.should have_css"
+
+# rails 2 to rails 3
 ? !ruby/regexp /link_to_remote (.+?), (.+)/
 : "link_to \1, :remote => true, \2"
+# cleanup filters
+? !ruby/regexp /^\s+page\.save_and_open_page\n$/m
+: ""
+? !ruby/regexp /^\s+debugger\n$/m
+: ""
+
