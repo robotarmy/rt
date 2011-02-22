@@ -7,8 +7,8 @@ describe "RT Bin" do
     end
 
     it " backs up filename " do
-      %x{ruby ./rt.rb fixture.rb --no-prompt}
-      File.exists?('fixture.rb.bak')
+      %x{ruby ./rt.rb #{mock_ruby_path} --no-prompt}
+      File.exists?(fixture_path('fixture.rb.bak')).should be_true
     end
 
     it " alters the original file" do
