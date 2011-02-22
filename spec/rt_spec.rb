@@ -140,9 +140,12 @@ describe RT do
     end
 
     before do
-      %x{mkdir -p #{rt.directory}}
+      %x{mkdir -p #{rt.directory}/dir2}
       %w(file1 file2).each do |f|
         %x{touch #{File.join(rt.directory,f)}}
+      end
+      %w(file3 file4).each do |f|
+        %x{touch #{File.join(rt.directory,'dir2',f)}}
       end
     end
     after do
@@ -151,7 +154,7 @@ describe RT do
 
     it "counts number of files processed" do
       rt.run
-      rt.file_count.should == 2
+      rt.file_count.should == 4
     end
   end
 

@@ -20,7 +20,7 @@ class RT
 
 
   def next_file_in_directory
-    @files ||= Dir[%%#{self.directory}/**/*%]
+    @files ||= Dir[%%#{self.directory}/**/*%].delete_if {|dir| File.directory?(dir)}
     next_file = @files.shift
     if next_file
       self.current_file = File.open(next_file,'r')
