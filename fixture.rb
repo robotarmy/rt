@@ -44,21 +44,24 @@ class Snoopy
   def replacement_line
     @replacement_line = current_line
     unless @replacement_line.nil?
+      inc_line_count
       each_regexp do |s,r|
         unless @replacement_line.scan(s).empty?
-          puts @replacement_line
-          print_prompt_for(s,r)
+          inc_match_count
+          print_prompt_for(@replacement_line,s,r)
           if yes?
             @replacement_line.gsub!(s,r)
+            inc_change_count
           end
         end
       end
     end
     @replacement_line
   end
-  def print_prompt_for(search,replace)
-    stdout << "Replacing #{search} with #{replace}\n"
-    stdout << "Would you like to replace this instance : [y] or [n] ?"
+  def print_prompt_for(line,search,replace)
+    stdout << "- #{line}"
+    stdout << "+ #{line.gsub(search,replace)}"
+    stdout << "Would you like to replace this instance : [y] or [n] ? "
   end
 
   def get_prompt=(p)
@@ -80,7 +83,27 @@ class Snoopy
       false
     end
   end 
-
+  def inc_change_count
+    @change_count = change_count.succ
+  end
+  def change_count
+    @change_count ||= 0
+  end
+  def inc_match_count
+    @match_count = match_count.succ
+  end
+  def match_count
+    @match_count ||= 0
+  end
+  def inc_line_count
+    @line_count = line_count.succ
+  end
+  def line_count
+    @line_count ||= 0
+  end
+  def statistic_line 
+    %%#{line_count} lines / #{change_count} changes / #{match_count} matches%
+  end
   def each_regexp
     self.re_list.each do | s, r|
       yield s, r
@@ -96,6 +119,7 @@ class Snoopy
       end
     end
     %x{cp #{current_filename}.work #{current_filename}}
+    stdout << "#{statistic_line}\n"
   end
 end
 if $0 == __FILE__
