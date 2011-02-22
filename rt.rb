@@ -135,7 +135,7 @@ class RT
     @file_count ||=0
   end
   def statistic_line 
-    %%#{line_count} lines / #{change_count} changes / #{match_count} matches%
+    %%#{line_count} lines / #{change_count} changes / #{match_count} matches / #{file_count} files%
   end
   def each_regexp
     self.re_list.each do | s, r|

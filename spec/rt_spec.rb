@@ -155,6 +155,7 @@ describe RT do
     it "counts number of files processed" do
       rt.run
       rt.file_count.should == 4
+      rt.statistic_line.should include('4 files')
     end
   end
 
