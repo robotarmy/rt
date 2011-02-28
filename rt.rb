@@ -96,7 +96,11 @@ class RT
   end
   
   def get_prompt
-    @get_prompt || stdin.gets
+    @get_prompt || get_prompt_response
+  end
+
+  def get_prompt_response
+    str = self.stdin.gets
   end
 
   def yes?
@@ -181,7 +185,12 @@ if $0 == __FILE__
   filename = ARGV.shift
   if filename 
     puts "Operating on #{filename}"
-    rt = RT.new(YAML::load(IO.read('./.snoopy')))
+    rt = nil
+    if File.exist?('./.woodstock') 
+      rt = RT.new(YAML::load(IO.read('./.woodstock')))
+    else 
+      rt = RT.new(YAML::load(IO.read('./.snoopy')))
+    end
     rt.prompt = !("--no-prompt" == ARGV.shift)
     rt.run_on(filename)
   else

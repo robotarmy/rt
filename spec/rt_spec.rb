@@ -141,13 +141,16 @@ describe RT do
 
     before do
       %x{mkdir -p #{rt.directory}/dir2}
+
       %w(file1 file2).each do |f|
         %x{touch #{File.join(rt.directory,f)}}
       end
+
       %w(file3 file4).each do |f|
         %x{touch #{File.join(rt.directory,'dir2',f)}}
       end
     end
+
     after do
       %x{rm -rf #{rt.directory}}
     end
