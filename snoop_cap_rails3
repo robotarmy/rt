@@ -4,21 +4,24 @@
 : current_path
 ? !ruby/regexp /field_named/
 : find_field
-? !ruby/regexp /current_dom\.at/
-: 'page.should have_css'
 ? !ruby/regexp /\)\.text\s+include\((.+)/
 : ", :text => \1"
 ? !ruby/regexp /\)\.text.should == (.+)/
 : ", :text => \1)"
-? !ruby/regexp /current_dom\.text\.include\?((.+))\.should == (?:true|false)/
-: "page.should have_content(\1)"
+? !ruby/regexp /current_dom\.css\((.+?)\)\.text\.include\?\((.+?)\)\.should be_true/
+: "page.should have_css(\1, :text => \2)"
+? !ruby/regexp /current_dom\.at\((.+?)\)\.text\.include\?\((.+?)\)\.should == true/
+: "page.should have_css(\1, :text => \2)"
+? !ruby/regexp /current_dom\.text\.include\?(.+?)\.should == (?:true|false)/
+: "page.should have_content\1"
+#? !ruby/regexp /current_dom\.at/
+#: 'page.should have_css'
 ? !ruby/regexp /\s+check/
 : "page.check"
 ? !ruby/regexp /\s+uncheck/
 : "page.uncheck"
 ? !ruby/regexp /current_dom\.text\.include\?(.+?)\.(.+?)\s+be_true$/
 : "page.\2 have_content\1"
-
 # restful auth to devise helpers
 ? !ruby/regexp /login/
 : sign_in
@@ -26,6 +29,8 @@
 : sign_out
 ? !ruby/regexp /logged_in\?/
 : person_signed_in?
+? !ruby/regexp /Logged in successfully/
+: successfully
 
 # user to person helpers
 ? !ruby/regexp /user/
@@ -45,7 +50,7 @@
 
 # rails 2 to rails 3
 ? !ruby/regexp /link_to_remote (.+?), (.+)/
-: "link_to \1, :remote => true, \2"
+: "link_to \1, \2, :remote => true"
 # cleanup filters
 ? !ruby/regexp /^\s+page\.save_and_open_page\n$/m
 : ""
