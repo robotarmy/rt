@@ -1,4 +1,4 @@
-n the process of reworking a Rails 2.3.4 application into a Rails 3.0.5 application there were quite a few common changes. Most of the actual work happened in the spec testing layer where RSpec was moving from 1.3 to 2.5 and Webrat was being exchanged in favour of Capybara.
+In the process of reworking a Rails 2.3.4 application into a Rails 3.0.5 application there were quite a few common changes. Most of the actual work happened in the spec testing layer where RSpec was moving from 1.3 to 2.5 and Webrat was being exchanged in favour of Capybara.
 
 While my apprentice Anita Kuno and myself, Curtis Schofield, were working on this project, I mentioned it was recommended to me by Sarah Allen to take note of process and look at what can be automated. I’ve practiced this myself to an extent – one of the barriers I have encountered in this practice is being told that what you are doing is not necessary by people who are not career programmers. This kind of sentiment can take the wind out of ones sails.
 
@@ -52,6 +52,6 @@ example .snoopy
 : current_path
 ? !ruby/regexp /field_named/
 : find_field
-Any questions? email : ask_the_dishes@ram9.cc
+Any questions? email : ask_the_dishes ___at ___ ram9.cc
 
 :wq
