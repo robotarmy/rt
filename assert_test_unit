@@ -1,0 +1,17 @@
+--- 
+? !ruby/regexp /RT/
+: Snoopy
+? !ruby/regexp /(\s*)(.+).should_not be_valid/
+: "\1assert !\2.valid?"
+? !ruby/regexp /(\s*)(.+).should include\((.+)\)/
+: "\1assert \2.include?(\3)"
+? !ruby/regexp /(\s*)response.should render_template\((.+)\)/
+: "\1assert_template(\2,%%should render_template \2%)"
+? !ruby/regexp /^describe\s+(.+?)\s+.*$/
+: "class \1Test < Test::Unit::TestCase"
+? !ruby/regexp /^describe\s+(.+?)Controller\s+.*$/
+: "class \1ControllerTest <  ActionController::TestCase"
+? !ruby/regexp /^.*spec_helper.*$/
+: "require 'test_helper'"
+? !ruby/regexp /^.*before\s.*$/
+: "def setup"
