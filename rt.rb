@@ -84,6 +84,12 @@ class RT
       end
     end
     @replacement_line
+  rescue StandardError => e
+    puts "----"
+    puts self.current_filename
+    puts @replacement_line
+    p e
+    puts e.backtrace
   end
   def print_prompt_for(line,search,replace)
     stdout << "- #{line}"
